@@ -11,11 +11,18 @@
       <label for="None">None</label>
     </div>
 
-    <div id="printable" @input="renderQRCode()">
-      <vue-qrcode :value="value" errorCorrectionLevel="H" />
+    <div @input="updatePasswordStatus($event.target.checked)">
+      <input type="checkbox" id="hidePassword" name="hidePassword">
+      <label for="hidePassword">Hide password on print ?</label>
+    </div>
 
-      <label for="wifi-ssid">Wifi name</label>
-      <input name="wifi-ssid" id="wifi-ssid" @input="updateQRCodeSSID($event.target.value)" required>
+    <div id="printable-all" @input="renderQRCode()">
+      <div id="printable-nopass">
+        <vue-qrcode id="qr-code" :value="value" errorCorrectionLevel="H" />
+
+        <label for="wifi-ssid">Wifi name</label>
+        <input name="wifi-ssid" id="wifi-ssid" @input="updateQRCodeSSID($event.target.value)" required>
+      </div>
 
       <label for="wifi-password">Wifi password</label>
       <input name="wifi-password" id="wifi-password" min="8" @input="updateQRCodePassword($event.target.value)">
@@ -38,7 +45,8 @@ export default {
       ssid: "",
       password: "",
       network_encryption: "WAP",
-      value: " ",
+      hidePassword: false,
+      value: "WIFI:T:WAP;S:;P:;;",
     }
   },
   methods: {
@@ -46,10 +54,13 @@ export default {
       this.ssid = escape(ssid);
     },
     updateQRCodePassword(password) {
-      this.wifipassword = password;
+      this.password = password;
     },
     updateNetworkEncryptionType(mode) {
       this.network_encryption = mode;
+    },
+    updatePasswordStatus(hidePassword) {
+      this.hidePassword = hidePassword;
     },
     renderQRCode() {
       this.value =
@@ -69,7 +80,14 @@ export default {
 
       page.document.write("<!DOCTYPE html><html lang='en'><head><title>" + document.title + "</title>");
       page.document.write("</head><body>");
-      page.document.write(document.getElementById("printable").innerHTML);
+      if (this.hidePassword) {
+        page.document.write(document.getElementById("printable-nopass").innerHTML);
+      } else {
+        page.document.write(document.getElementById("printable-all").innerHTML);
+      }
+      // Filling data not copied by getElementById()
+      page.document.getElementById("wifi-ssid").value = this.ssid;
+      page.document.getElementById("wifi-password").value = this.password;
       page.document.write("</body></html>");
 
       page.document.close();
