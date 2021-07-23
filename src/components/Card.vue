@@ -1,34 +1,70 @@
 <template>
-  <div id="card">
-    <div @input="updateNetworkEncryptionType($event.target.value)">
-      <input type="radio" id="WEP" name="networkEncryptionType" value="WEP">
-      <label for="WEP">WEP</label>
+  <div id="card" class="rounded-xl py-4 px-8">
+      <v-radio-group
+          @change="renderQRCode()"
+          v-model="network_encryption"
+          mandatory>
+        <v-radio
+            label="WEP"
+            value="WEP"
+        ></v-radio>
+        <v-radio
+            label="WPA/WPA2"
+            value="WPA"
+        ></v-radio>
+        <v-radio
+            label="No password"
+            value="nopass"
+        ></v-radio>
+      </v-radio-group>
 
-      <input type="radio" id="WPA/WPA2" name="networkEncryptionType" value="WPA" checked>
-      <label for="WPA/WPA2">WPA/WPA2</label>
+      <div id="printable-all" @input="renderQRCode()">
+        <div id="printable-nopass">
+          <div class="text-center d-flex flex-column align-center">
+            <vue-qrcode
+                id="qr-code"
+                :value="value"
+                errorCorrectionLevel="H"
+                width="170"
+            />
+          </div>
 
-      <input type="radio" id="None" name="networkEncryptionType" value="nopass">
-      <label for="None">None</label>
-    </div>
 
-    <div @input="updatePasswordStatus($event.target.checked)">
-      <input type="checkbox" id="hidePassword" name="hidePassword">
-      <label for="hidePassword">Hide password on print ?</label>
-    </div>
+          <v-text-field
+              label="Wifi name"
+              maxlength="32"
+              v-model="ssid"
+              counter="32"
+              required
+              id="ssid"
+          ></v-text-field>
+        </div>
 
-    <div id="printable-all" @input="renderQRCode()">
-      <div id="printable-nopass">
-        <vue-qrcode id="qr-code" :value="value" errorCorrectionLevel="H" />
-
-        <label for="wifi-ssid">Wifi name</label>
-        <input name="wifi-ssid" id="wifi-ssid" @input="updateQRCodeSSID($event.target.value)" required>
+        <v-text-field
+            label="Wifi password"
+            v-model="password"
+            id="password"
+        ></v-text-field>
       </div>
 
-      <label for="wifi-password">Wifi password</label>
-      <input name="wifi-password" id="wifi-password" min="8" @input="updateQRCodePassword($event.target.value)">
-    </div>
+      <div class="text-center d-flex flex-column align-center">
+        <v-switch
+            label="Hide password on printing ?"
+            v-model="hidePassword"
+            hide-details
+            class="py-4"
+        ></v-switch>
 
-    <button type="button" v-on:click="print()">Print</button>
+        <v-btn
+            elevation="2"
+            v-on:click="print()"
+        >
+          Print
+          <v-icon right>
+            mdi-printer
+          </v-icon>
+        </v-btn>
+      </div>
   </div>
 </template>
 
@@ -44,24 +80,12 @@ export default {
     return {
       ssid: "",
       password: "",
-      network_encryption: "WAP",
+      network_encryption: "WPA",
       hidePassword: false,
-      value: "WIFI:T:WAP;S:;P:;;",
+      value: "WIFI:T:WPA;S:;P:;;",
     }
   },
   methods: {
-    updateQRCodeSSID(ssid) {
-      this.ssid = escape(ssid);
-    },
-    updateQRCodePassword(password) {
-      this.password = password;
-    },
-    updateNetworkEncryptionType(mode) {
-      this.network_encryption = mode;
-    },
-    updatePasswordStatus(hidePassword) {
-      this.hidePassword = hidePassword;
-    },
     renderQRCode() {
       this.value =
           "WIFI:T:" + this.network_encryption +
@@ -86,8 +110,8 @@ export default {
         page.document.write(document.getElementById("printable-all").innerHTML);
       }
       // Filling data not copied by getElementById()
-      page.document.getElementById("wifi-ssid").value = this.ssid;
-      page.document.getElementById("wifi-password").value = this.password;
+      page.document.getElementById("ssid").value = this.ssid;
+      page.document.getElementById("password").value = this.password;
       page.document.write("</body></html>");
 
       page.document.close();
