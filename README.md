@@ -1,4 +1,4 @@
-# qrcode2wifi
+# qrcode4wifi
 
 ## Project setup
 ```
