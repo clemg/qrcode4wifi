@@ -1,23 +1,19 @@
 <template>
-  <v-app>
+  <v-app align="center">
     <div class="pa-8">
-      <div align="center">
-        <h1>QR Code 4 wifi</h1>
+      <h1>QR Code 4 wifi</h1>
 
-        <div class="mt-6">
-          <p>Enter your wifi point information and get a QR code to scan for your guests.
-            <br>You can print it to stick the code on the fridge, the door or just keep it on your desk.
-            <br>Source available at: <a href="https://github.com/clemg/qrcode4wifi" target="_blank">github.com/clemg/qrcode4wifi</a></p>
-        </div>
+      <div class="mt-6">
+        <p>Enter your wifi point information and get a QR code to scan for your guests.
+          <br>You can print it to stick the code on the fridge, on the door or just keep it on your desk.
+          <br>Source available at: <a href="https://github.com/clemg/qrcode4wifi" target="_blank">github.com/clemg/qrcode4wifi</a>
+        </p>
       </div>
 
-
       <v-main>
-        <Card />
+        <Card/>
       </v-main>
-
     </div>
-
   </v-app>
 </template>
 
@@ -29,17 +25,6 @@ export default {
 
   components: {
     Card,
-  },
-
-  data: () => ({
-    //
-  }),
+  }
 };
 </script>
-
-
-<style>
-/*html, body {
-  margin: 2vw;
-}*/
-</style>
