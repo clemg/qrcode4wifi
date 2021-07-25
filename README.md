@@ -1,4 +1,12 @@
-# qrcode4wifi
+# QR code 4 wifi
+
+Available at: [qrcode4wifi.netlify.app/](https://qrcode4wifi.netlify.app/)
+Generate QR codes according to your wifi settings to ease you guests' life. Print the code and stick it on the fridge, the door or keep on your desk. When a guest wants to get access to the wifi, let him scan the code to connect him automatically.
+
+
+# Tech stuff
+Made with Vue, to pratice (first "complete" project done with vue).
+Also used a bit of Vuetify.
 
 ## Project setup
 ```
