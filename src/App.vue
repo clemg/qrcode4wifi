@@ -29,6 +29,9 @@ export default {
 
   components: {
     Card,
+  },
+  mounted() {
+    document.title = "QR code 4 wifi"
   }
 };
 </script>
