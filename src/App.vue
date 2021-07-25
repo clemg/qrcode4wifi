@@ -1,7 +1,11 @@
 <template>
   <v-app align="center">
     <div class="pa-8">
-      <h1>QR Code 4 wifi</h1>
+      <h1>
+        <v-icon>mdi-wifi-star</v-icon>
+        QR Code 4 wifi
+        <v-icon>mdi-wifi-star</v-icon>
+      </h1>
 
       <div class="mt-6">
         <p>Enter your wifi point information and get a QR code to scan for your guests.
