@@ -1,6 +1,7 @@
 <template>
   <div id="card" class="rounded-xl py-4 px-8">
-    <div id="networkEncryptionOptions">
+    <div id="networkEncryptionOptions"
+         v-show="!printing">
       <v-radio-group
           @change="renderQRCode()"
           v-model="network_encryption"
@@ -48,6 +49,7 @@
             label="Wifi password"
             v-model="password"
             id="password"
+            v-show="!hidePassword || !printing"
         ></v-text-field>
       </div>
     </div>
@@ -61,11 +63,13 @@
             v-model="hidePassword"
             hide-details
             class="py-4"
+            v-show="!printing">
         ></v-switch>
 
         <v-btn
             elevation="2"
             v-on:click="print"
+            v-show="!printing"
         >
           Print
           <v-icon right>
@@ -91,6 +95,7 @@ export default {
       password: "",
       network_encryption: "WPA",
       hidePassword: false,
+      printing: false,
       value: "WIFI:T:WPA;S:;P:;;",
     }
   },
@@ -103,27 +108,26 @@ export default {
           ";;";
     },
     print() {
-      if (!(this.ssid.length > 0)) return alert("Wifi name cannot be empty!");
+      /*if (!(this.ssid.length > 0)) return alert("Wifi name cannot be empty!");
       if (this.network_encryption === "WPA" && !(this.password.length >= 8))
         return alert("Password must be at least 8 characters long!");
       if (this.network_encryption === "WEP" && !(this.password.length >= 6))
-        return alert("Password must be at least 6 characters long!");
+        return alert("Password must be at least 6 characters long!");*/
 
-      let networkEncryptionOptions = document.getElementById("networkEncryptionOptions");
-      let printingOptions = document.getElementById("printingOptions");
-      let passwordField = document.getElementById("passwordField");
+      /*this.printing = !this.printing;
 
-      // Hiding useless stuff
-      networkEncryptionOptions.style.display = "none";
-      printingOptions.style.display = "none";
-      if (this.hidePassword) passwordField.style.display = "none";
+      this.$nextTick(() => {
+        window.print();
+      });
+      //window.print();
 
-      window.print();
+      this.printing = !this.printing;*/
 
-      // Displaying it back
-      networkEncryptionOptions.style.display = "";
-      printingOptions.style.display = "";
-      passwordField.style.display = "";
+      this.printing = true;
+      this.$nextTick(function() {
+        window.print();
+        this.printing = false;
+      });
     }
   }
 }
