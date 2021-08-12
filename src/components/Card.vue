@@ -108,20 +108,11 @@ export default {
           ";;";
     },
     print() {
-      /*if (!(this.ssid.length > 0)) return alert("Wifi name cannot be empty!");
+      if (!(this.ssid.length > 0)) return alert("Wifi name cannot be empty!");
       if (this.network_encryption === "WPA" && !(this.password.length >= 8))
         return alert("Password must be at least 8 characters long!");
       if (this.network_encryption === "WEP" && !(this.password.length >= 6))
-        return alert("Password must be at least 6 characters long!");*/
-
-      /*this.printing = !this.printing;
-
-      this.$nextTick(() => {
-        window.print();
-      });
-      //window.print();
-
-      this.printing = !this.printing;*/
+        return alert("Password must be at least 6 characters long!");
 
       this.printing = true;
       this.$nextTick(function() {
